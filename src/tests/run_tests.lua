@@ -1,3 +1,6 @@
+--List of all test files (relative to whatever directory you run this from, which is assumed to be the root of the repo)
+local test_files = assert(loadfile("src/tests/manifest.lua"))();
+
 local function run_test_file(path)
   local loaded, load_err = loadfile(path);
   if load_err then
@@ -65,11 +68,6 @@ local function run_test_file(path)
 
 end
 
---List of all test files (relative to whatever directory you run this from, which is assumed to be the root of the repo)
-local test_files = {
-  "src/tests/demo_tests.lua"
-};
-
 print("Running tests from " .. #test_files .. " files...");
 local p = print;
 _G.print = function(s) p(" | " .. s); end;
@@ -84,7 +82,7 @@ for _, path in ipairs(test_files) do
   print("Testing " .. path);
 
   local r, p, f = run_test_file(path);
-  
+
   count = count + r;
   pass = pass + p;
   fail = fail + f;
