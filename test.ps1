@@ -1,0 +1,1 @@
+lua src/tests/run_tests.lua
