@@ -1,0 +1,1 @@
+Check out into `game/dota/scripts/vscripts/bots` for development.
