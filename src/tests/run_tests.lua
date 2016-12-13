@@ -1,6 +1,15 @@
 --List of all test files (relative to whatever directory you run this from, which is assumed to be the root of the repo)
 local test_files = assert(loadfile("src/tests/manifest.lua"))();
 
+local function expect_error(fun)
+  --Run "fun" and throw an error if it does *not* throw an error
+  local ret, err = pcall(fun);
+
+  if not err then
+    error("Expected function to error, instead return result: '" .. tostring(ret) .. "'");
+  end
+end
+
 local function run_test_file(path)
   local loaded, load_err = loadfile(path);
   if load_err then
@@ -22,6 +31,8 @@ local function run_test_file(path)
     local env = nil;
     env = setmetatable({
       a_test_ran = false,
+
+      expect_error = expect_error,
 
       test = function(label, func)
 
@@ -86,6 +97,8 @@ for _, path in ipairs(test_files) do
   count = count + r;
   pass = pass + p;
   fail = fail + f;
+
+  print(" - Done (" .. tostring(r) .. ")")
 end
 
 local duration = os.time() - start;
