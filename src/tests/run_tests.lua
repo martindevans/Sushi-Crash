@@ -14,7 +14,7 @@ local function run_test_file(path)
   local loaded, load_err = loadfile(path);
   if load_err then
     print("CRIT - Loading file '" .. path .. "' encountered error '" .. load_err .. "'");
-    return;
+    return 1, 0, 1;
   end
 
   local ran = 0;
@@ -27,10 +27,19 @@ local function run_test_file(path)
     --Keep track of the index of the test we're going to run next
     local test_index = 0;
 
+    --Keep a list of printed string, print them if this fails
+    local printed = {};
+
+    --Clear all loaded modules
+    _LOADED = {};
+
     --Create a new environment with a "test" function which will run a single test this iteration
     local env = nil;
     env = setmetatable({
       a_test_ran = false,
+      print = function(str)
+        table.insert(printed, str);
+      end,
 
       expect_error = expect_error,
 
@@ -42,7 +51,10 @@ local function run_test_file(path)
           local _, err = pcall(func);
           if err then
             env.test_passed = false;
-            print("FAIL - " .. err);
+            print(" - FAIL (" .. label .. ") - " .. err);
+            for i, s in ipairs(printed) do
+              print("   > " .. s);
+            end
           else
             env.test_passed = true;
           end
@@ -55,8 +67,8 @@ local function run_test_file(path)
     --Run the file in the scope we just created
     local status, run_err = pcall(setfenv(loaded, env));
     if not status then
-      print("CRIT - Running test file '" .. path .. "' encountered error '" .. run_err .. "'");
-      return;
+      print(" - CRIT - Running test file '" .. path .. "' encountered error '" .. run_err .. "'");
+      return 1, 0, 1;
     end
 
     --Update the counter so the next test will run next time
@@ -97,8 +109,6 @@ for _, path in ipairs(test_files) do
   count = count + r;
   pass = pass + p;
   fail = fail + f;
-
-  print(" - Done (" .. tostring(r) .. ")")
 end
 
 local duration = os.time() - start;

@@ -18,45 +18,47 @@ local function readonly(t)
    });
 end
 
-test("Return is readonly", function()
-  local t = { hello = "world" };
-  local r = readonly(t);
+if test then
+  test("Return is readonly", function()
+    local t = { hello = "world" };
+    local r = readonly(t);
 
-  --This should throw!
-  expect_error(function()
-    r.hello = ", world";
-  end);
-end)
-
-test("Cannot make non-table readonly", function()
-  expect_error(function()
-    readonly(1);
+    --This should throw!
+    expect_error(function()
+      r.hello = ", world";
+    end);
   end)
-end);
 
-test("Can read from readonly table", function()
-  local t = { hello = "world" };
-  local r = readonly(t);
-
-  assert(t.hello == "world");
-end);
-
-test("Can mutate underlying table", function()
-  local t = { hello = "world" };
-  local r = readonly(t);
-
-  t.hello = "せかい";
-
-  assert(t.hello == "せかい");
-end);
-
-test("Cannot set metatable of readonly", function()
-  local t = { hello = "world" };
-  local r = readonly(t);
-
-  expect_error(function()
-    setmetatable(r, {});
+  test("Cannot make non-table readonly", function()
+    expect_error(function()
+      readonly(1);
+    end)
   end);
-end)
+
+  test("Can read from readonly table", function()
+    local t = { hello = "world" };
+    local r = readonly(t);
+
+    assert(t.hello == "world");
+  end);
+
+  test("Can mutate underlying table", function()
+    local t = { hello = "world" };
+    local r = readonly(t);
+
+    t.hello = "せかい";
+
+    assert(t.hello == "せかい");
+  end);
+
+  test("Cannot set metatable of readonly", function()
+    local t = { hello = "world" };
+    local r = readonly(t);
+
+    expect_error(function()
+      setmetatable(r, {});
+    end);
+  end)
+end
 
 return readonly;

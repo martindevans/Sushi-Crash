@@ -1,11 +1,5 @@
-local state = 0;
+--If it is not defined, define a test function which does nothing
+_G.test = _G.test or function() end;
 
 function Think()
-    if state == 0 then
-        for k, _ in pairs(_G) do
-            print(k);
-        end
-    end
-    
-    state = state + 1;
 end
