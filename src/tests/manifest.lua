@@ -7,4 +7,5 @@ return {
   "src/behaviour_tree/behaviour_tree.lua",
   "src/behaviour_tree/nodes/condition.lua",
   "src/behaviour_tree/nodes/coroutine.lua",
+  "src/behaviour_tree/nodes/sequence.lua",
 };
