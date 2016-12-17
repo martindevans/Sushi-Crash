@@ -1,10 +1,15 @@
---local abilities = require(GetScriptDirectory() .. "/src/game/dota_abilities");
+local abilities = require(GetScriptDirectory() .. "/src/game/dota_abilities");
 
 function Think()
   local bot = GetBot();
 
+  --Try to buy items
+  if TryToBuyItems(bot) then
+    return;
+  end
+
   --Try to level abilities
-  --TryToLevel(bot);
+  TryToLevel(bot);
 
   --Reset back to start state if we're dead
   if not bot:IsAlive() then
@@ -17,7 +22,7 @@ function Think()
   end
 
   --Flee!
-  if bot:GetHealth() < bot:GetMaxHealth() * 0.5 then
+  if bot:GetHealth() < bot:GetMaxHealth() * 0.65 then
     if TP_To_Fountain(bot) then
       return;
     end
@@ -35,12 +40,14 @@ function Think()
   local doing_stuff = AttackNearbyHeroes(bot) or AttackNearbyBuildings(bot) or AttackNearbyCreeps(bot);
 end
 
+function TryToBuyItems(bot)
+  return bot:Action_PurchaseItem("item_tpscroll") == PURCHASE_ITEM_SUCCESS;
+end
+
 function TryToLevel(bot)
   local bot_abilities = abilities.GetAbilities(bot);
   for k, v in pairs(bot_abilities) do
-    print("Ab: " .. k);
     if v:GetLevel() < v:GetMaxLevel() then
-      print("Ab: Upgrading");
       v:UpgradeAbility();
     end
   end

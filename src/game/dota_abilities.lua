@@ -77,6 +77,7 @@ module.GetAbilities = function(bot)
   local abilities = hero_ability_names[name];
   if not abilities then
     print(string.format("Warning: Cannot find ability list for hero '%s'", name));
+    return {}
   end
 
   local result = {};
