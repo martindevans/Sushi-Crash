@@ -1,17 +1,29 @@
-Msg : function
- - Prints to console (no newline)
+Msg(msg)
+ - Prints given message to console (no newline)
 
-DotaTime : function
+DotaTime()
  - Current game time (corresponds exactly to the time shown at the top of the UI). This starts *negative* and counts up to the horn.
 
-GameTime : function
+GameTime()
  - Shows a time which increments at the same speed as DotaTime. Does not progress when paused.
  - At approximately 30 seconds into a game value is `161`. So I *guess* this starts from zero when the picking phase starts
 
-RealTime : function
+RealTime()
  - Shows the real time since the game started (continues ticking up during a pause)
 
-GetGameMode : function
+GetBot())
+ - Gets a table which represents the current bot
+
+GetTeamMember(team, index)
+ - Gets a table representing the given bot.
+ - Team is one of:
+  - TEAM_DIRE : number
+  - TEAM_NONE : number
+  - TEAM_NEUTRAL : number
+  - TEAM_RADIANT : number
+ - index is a value of [1, 5]. Values out of range return nil.
+
+GetGameMode()
  - Returns an integer. Presumably one of:
   - GAMEMODE_ABILITY_DRAFT : number
   - GAMEMODE_ARDM : number
@@ -27,22 +39,41 @@ GetGameMode : function
   - GAMEMODE_CD : number
   - GAMEMODE_AR : number
 
-GetScriptDirectory : function
+GetScriptDirectory()
  - Path to the currently running bot. e.g. `C:\SteamLibrary\steamapps\common\dota 2 beta\game\dota\scripts\vscripts\bots`
 
-DebugDrawText : function
- - When called like `DebugDrawText("Hello")` throws an error: `1 arguments - expected 6`
+DebugDrawText(\_, \_, \_, \_, \_, \_)
+ - Some Debugging pulled out the required types: `DebugDrawText(float, float, cstring, integer, integer, integer)`
+ - It seems reasonable to guess this is `x, y, message, r, g, b` however this does not print text at the expected location. Maybe there's a command to toggle visibility?
 
-DebugDrawLine : function
- - When called like `DebugDrawLine()` throws an error: `called with 0 arguments - expected 5`
+DebugDrawLine(start, end, r, g, g)
+ - `start` is a `Vector(x, y, z)`
+ - `end` is a `Vector(x, y, z)`
+ - `r, g, b` are all values [0, 255] which together specify the colour
 
-GetRuneStatus : function
+ DebugDrawCircle(pos, radius, r, g, b)
+  - Draws an opaque circle over the game world
+  - `pos` is `Vector(x, y, z)`
+  - `radius` is a number
+  - `r, g, b` are all values [0, 255] which together specify the colour
+
+GetRuneStatus(\_)
  - When called like `GetRuneStatus()` throws an error: `called with 0 arguments - expected 1`
 
-GetRuneType : function
+GetRuneType(\_)
  - When called like `GetRuneType()` throws an error: `called with 0 arguments - expected 1`
 
-_VERSION : string
+Vector(x, y, z)
+ - Constructs a vector object
+
+GetTeam()
+ - Gets the team of the current bot. One of:
+  - TEAM_DIRE : number
+  - TEAM_NONE : number
+  - TEAM_NEUTRAL : number
+  - TEAM_RADIANT : number
+
+\_VERSION : string
  - Version of Lua (this is currently 5.1)
 
 debug : table
@@ -92,7 +123,7 @@ GetUnitToLocationDistance : function
 setmetatable : function
 GetLocationAlongLane : function
 setfenv : function
-GetTeamMember : function
+
 newproxy : function
 Min : function
 pairs : function
@@ -128,8 +159,7 @@ RUNE_STATUS_MISSING : number
 GetCMPhaseTimeRemaining : function
 RUNE_STATUS_UNKNOWN : number
 tostring : function
-TEAM_NONE : number
-GetBot : function
+
 rawget : function
 DAMAGE_TYPE_MAGICAL : number
 BOT_MODE_DEFEND_ALLY : number
@@ -223,7 +253,6 @@ package : table
 HEROPICK_STATE_CM_SELECT3 : number
 HEROPICK_STATE_AR_SELECT : number
 loadfile : function
-
 HEROPICK_STATE_CM_PICK : number
 IsLocationPassable : function
 HEROPICK_STATE_CM_SELECT10 : number
@@ -233,9 +262,7 @@ BOT_MODE_SECRET_SHOP : number
 RUNE_BOUNTY : number
 collectgarbage : function
 HEROPICK_STATE_CM_SELECT4 : number
-
 PURCHASE_ITEM_NOT_AT_SECRET_SHOP : number
-
 HEROPICK_STATE_CM_SELECT2 : number
 BOT_MODE_ASSEMBLE : number
 select : function
@@ -255,7 +282,6 @@ HEROPICK_STATE_CM_BAN4 : number
 tonumber : function
 HEROPICK_STATE_CM_BAN3 : number
 BOT_MODE_DESIRE_VERYLOW : number
-TEAM_DIRE : number
 BOT_ACTION_DESIRE_HIGH : number
 HEROPICK_STATE_CM_INTRO : number
 HEROPICK_STATE_SD_SELECT : number
@@ -280,24 +306,15 @@ GetGameStateTimeRemaining : function
 LANE_NONE : number
 rawset : function
 RUNE_ARCANE : number
-Vector : function
-
-TEAM_NEUTRAL : number
 HEROPICK_STATE_CM_CAPTAINPICK : number
-TEAM_RADIANT : number
 rawequal : function
-
 GetWorldBounds : function
 IsInCMPickPhase : function
 HEROPICK_STATE_NONE : number
-
 RUNE_STATUS_AVAILABLE : number
-
 CMPickHero : function
 next : function
 CDOTABaseAbility_BotScript : table
 RUNE_HASTE : number
-DebugDrawCircle : function
-GetTeam : function
 GetItemCost : function
 BOT_ACTION_DESIRE_VERYLOW : number
