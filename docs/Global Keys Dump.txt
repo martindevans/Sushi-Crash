@@ -1,256 +1,303 @@
-﻿BotBaseScriptScope
-g_reloadState
-RUNE_STATUS_MISSING
-GAMEMODE_REVERSE_CM
-GetCMPhaseTimeRemaining
-RUNE_STATUS_UNKNOWN
-tostring
-TEAM_NONE
-GAMEMODE_AP
-GetBot
-rawget
-DAMAGE_TYPE_MAGICAL
-BOT_MODE_DEFEND_ALLY
-GetGameMode
-BOT_MODE_DESIRE_HIGH
-HEROPICK_STATE_CM_SELECT6
-Max
-GAME_STATE_INIT
-ipairs
-BOT_ACTION_DESIRE_NONE
-CMBanHero
-print
-printstack
-RUNE_REGENERATION
-pcall
-gcinfo
-HEROPICK_STATE_CM_BAN8
-GetRoshanDesire
-RandomInt
-BOT_MODE_WARD
-RollPercentage
-BOT_MODE_ROAM
-HERO_PICK_STATE_ARDM_SELECT
-string
-RUNE_DOUBLEDAMAGE
-DIFFICULTY_MEDIUM
-HEROPICK_STATE_CM_SELECT5
-BOT_MODE_DESIRE_ABSOLUTE
-DIFFICULTY_UNFAIR
-RUNE_INVALID
-HEROPICK_STATE_SELECT_PENALTY
-Msg
-BOT_MODE_DESIRE_LOW
-GAME_STATE_PRE_GAME
-HEROPICK_STATE_CM_SELECT9
-HEROPICK_STATE_ALL_DRAFT_SELECT
-RUNE_ILLUSION
-DIFFICULTY_PASSIVE
-HERO_PICK_STATE_ABILITY_DRAFT_SELECT
-HEROPICK_STATE_BD_SELECT
-DIFFICULTY_INVALID
-HEROPICK_STATE_CD_PICK
-GAME_STATE_TEAM_SHOWCASE
-HEROPICK_STATE_CD_SELECT10
-RemapVal
-HEROPICK_STATE_CM_BAN6
-BOT_MODE_PUSH_TOWER_MID
-load
-GetSelectedHeroName
-GetHeroPickState
-type
-GetScriptDirectory
-HEROPICK_STATE_CD_SELECT9
-HEROPICK_STATE_CD_SELECT8
-HEROPICK_STATE_CD_SELECT7
-HEROPICK_STATE_CM_BAN10
-HEROPICK_STATE_CD_SELECT6
-BOT_MODE_LANING
-HEROPICK_STATE_CD_SELECT5
-HEROPICK_STATE_CD_SELECT4
-HEROPICK_STATE_CD_SELECT3
-HEROPICK_STATE_CD_SELECT2
-HEROPICK_STATE_CD_SELECT1
-HEROPICK_STATE_AP_SELECT
-PURCHASE_ITEM_OUT_OF_STOCK
-HEROPICK_STATE_CD_BAN6
-BOT_MODE_ASSEMBLE_WITH_HUMANS
-IsInCMBanPhase
-xpcall
-DebugDrawText
-HEROPICK_STATE_CM_SELECT7
-BOT_MODE_TEAM_ROAM
-HEROPICK_STATE_CD_BAN5
-HEROPICK_STATE_CD_BAN4
-CDOTA_Bot_Script
-GAME_STATE_LAST
-LANE_MID
-BOT_ACTION_DESIRE_VERYHIGH
-HEROPICK_STATE_CD_BAN3
-HEROPICK_STATE_CM_BAN1
-BOT_MODE_DEFEND_TOWER_BOT
-HEROPICK_STATE_CD_BAN2
-HEROPICK_STATE_CD_BAN1
-loadstring
-BOT_MODE_EVASIVE_MANEUVERS
-GetItemStockCount
-HEROPICK_STATE_CD_CAPTAINPICK
-HEROPICK_STATE_CD_INTRO
-CDOTA_TeamCommander
-BOT_MODE_FARM
-HEROPICK_STATE_FH_SELECT
-HEROPICK_STATE_MO_SELECT
-BOT_MODE_NONE
-package
-HEROPICK_STATE_CM_SELECT3
-HEROPICK_STATE_AR_SELECT
-loadfile
-GAMEMODE_1V1MID
-HEROPICK_STATE_CM_PICK
-IsLocationPassable
-HEROPICK_STATE_CM_SELECT10
-HEROPICK_STATE_CM_SELECT8
-BOT_MODE_DEFEND_TOWER_MID
-BOT_MODE_SECRET_SHOP
-RUNE_BOUNTY
-collectgarbage
-HEROPICK_STATE_CM_SELECT4
-GAMEMODE_MO
-PURCHASE_ITEM_NOT_AT_SECRET_SHOP
-GAMEMODE_ARDM
-HEROPICK_STATE_CM_SELECT2
-BOT_MODE_ASSEMBLE
-select
-HEROPICK_STATE_CM_SELECT1
-unpack
-getfenv
-PURCHASE_ITEM_DISALLOWED_ITEM
-RUNE_INVISIBILITY
-DAMAGE_TYPE_ALL
-HEROPICK_STATE_CM_BAN5
-DIFFICULTY_EASY
-assert
-Clamp
-HEROPICK_STATE_CM_BAN7
-GetHeightLevel
-HEROPICK_STATE_CM_BAN4
-tonumber
-HEROPICK_STATE_CM_BAN3
-BOT_MODE_DESIRE_VERYLOW
-TEAM_DIRE
-BOT_ACTION_DESIRE_HIGH
-HEROPICK_STATE_CM_INTRO
-HEROPICK_STATE_SD_SELECT
-GAMEMODE_ABILITY_DRAFT
-BOT_MODE_DESIRE_MODERATE
-BOT_MODE_DESIRE_NONE
-GAME_STATE_WAIT_FOR_MAP_TO_LOAD
-bit
-GetRuneStatus
-GAME_STATE_DISCONNECT
-GAME_STATE_WAIT_FOR_PLAYERS_TO_LOAD
-GetRoamDesire
-Warning
-GAME_STATE_GAME_IN_PROGRESS
-GetRoamTarget
-GAME_STATE_STRATEGY_TIME
-BOT_MODE_RETREAT
-BOT_ACTION_DESIRE_ABSOLUTE
-GAME_STATE_POST_GAME
-GAME_STATE_HERO_SELECTION
-GetUnitToUnitDistance
-LANE_TOP
-GetGameStateTimeRemaining
-LANE_NONE
-rawset
-RUNE_ARCANE
-Vector
-GAMEMODE_CM
-TEAM_NEUTRAL
-HEROPICK_STATE_CM_CAPTAINPICK
-TEAM_RADIANT
-rawequal
-GAMEMODE_ALL_DRAFT
-GetWorldBounds
-IsInCMPickPhase
-HEROPICK_STATE_NONE
-GAMEMODE_CD
-RUNE_STATUS_AVAILABLE
-GAMEMODE_AR
-_VERSION
-CMPickHero
-next
-CDOTABaseAbility_BotScript
-RUNE_HASTE
-DebugDrawCircle
-GetTeam
-GetItemCost
-BOT_ACTION_DESIRE_VERYLOW
-debug
-BOT_MODE_DEFEND_TOWER_TOP
-BOT_MODE_SIDE_SHOP
-IsItemPurchasedFromSideShop
-GAMEMODE_NONE
-PURCHASE_ITEM_INVALID_ITEM_NAME
-coroutine
-GetNeutralSpawners
-PURCHASE_ITEM_NOT_AT_SIDE_SHOP
-IsCMBannedHero
-PURCHASE_ITEM_NOT_AT_HOME_SHOP
-PURCHASE_ITEM_INSUFFICIENT_GOLD
-BOT_MODE_ROSHAN
-HEROPICK_STATE_CM_BAN9
-PURCHASE_ITEM_SUCCESS
-DIFFICULTY_HARD
-DAMAGE_TYPE_PURE
-DAMAGE_TYPE_PHYSICAL
-BOT_MODE_DESIRE_VERYHIGH
-HEROPICK_STATE_CM_BAN2
-GetRuneType
-RandomFloat
-BOT_ACTION_DESIRE_MODERATE
-BOT_ACTION_DESIRE_LOW
-GAMEMODE_RD
-SetCMCaptain
-DebugDrawLine
-QAngle
-require
-table
-GetUnitToLocationDistance
-setmetatable
-GetLocationAlongLane
-setfenv
-GetTeamMember
-newproxy
-Min
-RealTime
-GameTime
-GAMEMODE_SD
-pairs
-BOT_MODE_PUSH_TOWER_TOP
-BotTeamCommander2
-GetRuneTimeSinceSeen
-IsCMPickedHero
-GetUnitPotentialValue
-dofile
-BOT_MODE_ATTACK
-RemapValClamped
-GetGameState
-error
-IsPlayerInHeroSelectionControl
-RandomVector
-IsItemPurchasedFromSecretShop
-SelectHero
-GAME_STATE_CUSTOM_GAME_SETUP
-GetCMCaptain
-GetDefendLaneDesire
-math
-GetFarmLaneDesire
-DotaTime
-_G
-GetPushLaneDesire
-LANE_BOT
-BOT_MODE_PUSH_TOWER_BOT
-getmetatable
-module
-BOT_MODE_ITEM
+Msg : function
+ - Prints to console (no newline)
+
+DotaTime : function
+ - Current game time (corresponds exactly to the time shown at the top of the UI). This starts *negative* and counts up to the horn.
+
+GameTime : function
+ - Shows a time which increments at the same speed as DotaTime. Does not progress when paused.
+ - At approximately 30 seconds into a game value is `161`. So I *guess* this starts from zero when the picking phase starts
+
+RealTime : function
+ - Shows the real time since the game started (continues ticking up during a pause)
+
+GetGameMode : function
+ - Returns an integer. Presumably one of:
+  - GAMEMODE_ABILITY_DRAFT : number
+  - GAMEMODE_ARDM : number
+  - GAMEMODE_MO : number
+  - GAMEMODE_1V1MID : number
+  - GAMEMODE_AP : number
+  - GAMEMODE_REVERSE_CM : number
+  - GAMEMODE_SD : number
+  - GAMEMODE_RD : number
+  - GAMEMODE_NONE : number
+  - GAMEMODE_ALL_DRAFT : number
+  - GAMEMODE_CM : number
+  - GAMEMODE_CD : number
+  - GAMEMODE_AR : number
+
+GetScriptDirectory : function
+ - Path to the currently running bot. e.g. `C:\SteamLibrary\steamapps\common\dota 2 beta\game\dota\scripts\vscripts\bots`
+
+DebugDrawText : function
+ - When called like `DebugDrawText("Hello")` throws an error: `1 arguments - expected 6`
+
+DebugDrawLine : function
+ - When called like `DebugDrawLine()` throws an error: `called with 0 arguments - expected 5`
+
+GetRuneStatus : function
+ - When called like `GetRuneStatus()` throws an error: `called with 0 arguments - expected 1`
+
+GetRuneType : function
+ - When called like `GetRuneType()` throws an error: `called with 0 arguments - expected 1`
+
+_VERSION : string
+ - Version of Lua (this is currently 5.1)
+
+debug : table
+  traceback : function
+  setlocal : function
+  getupvalue : function
+  setupvalue : function
+  upvalueid : function
+  getlocal : function
+  getregistry : function
+  getinfo : function
+  sethook : function
+  setmetatable : function
+  upvaluejoin : function
+  gethook : function
+  debug : function
+  getmetatable : function
+  setfenv : function
+  getfenv : function
+
+BOT_MODE_DEFEND_TOWER_TOP : number
+BOT_MODE_SIDE_SHOP : number
+IsItemPurchasedFromSideShop : function
+PURCHASE_ITEM_INVALID_ITEM_NAME : number
+coroutine : table
+GetNeutralSpawners : function
+PURCHASE_ITEM_NOT_AT_SIDE_SHOP : number
+IsCMBannedHero : function
+PURCHASE_ITEM_NOT_AT_HOME_SHOP : number
+PURCHASE_ITEM_INSUFFICIENT_GOLD : number
+BOT_MODE_ROSHAN : number
+HEROPICK_STATE_CM_BAN9 : number
+PURCHASE_ITEM_SUCCESS : number
+DIFFICULTY_HARD : number
+DAMAGE_TYPE_PURE : number
+DAMAGE_TYPE_PHYSICAL : number
+BOT_MODE_DESIRE_VERYHIGH : number
+HEROPICK_STATE_CM_BAN2 : number
+RandomFloat : function
+BOT_ACTION_DESIRE_MODERATE : number
+BOT_ACTION_DESIRE_LOW : number
+SetCMCaptain : function
+QAngle : function
+require : function
+table : table
+GetUnitToLocationDistance : function
+setmetatable : function
+GetLocationAlongLane : function
+setfenv : function
+GetTeamMember : function
+newproxy : function
+Min : function
+pairs : function
+BOT_MODE_PUSH_TOWER_TOP : number
+BotTeamCommander2 : table
+GetRuneTimeSinceSeen : function
+IsCMPickedHero : function
+GetUnitPotentialValue : function
+dofile : function
+BOT_MODE_ATTACK : number
+RemapValClamped : function
+GetGameState : function
+error : function
+IsPlayerInHeroSelectionControl : function
+RandomVector : function
+IsItemPurchasedFromSecretShop : function
+SelectHero : function
+GAME_STATE_CUSTOM_GAME_SETUP : number
+GetCMCaptain : function
+GetDefendLaneDesire : function
+math : table
+GetFarmLaneDesire : function
+_G : table
+GetPushLaneDesire : function
+LANE_BOT : number
+BOT_MODE_PUSH_TOWER_BOT : number
+getmetatable : function
+module : function
+BOT_MODE_ITEM : number
+BotBaseScriptScope : table
+g_reloadState : table
+RUNE_STATUS_MISSING : number
+GetCMPhaseTimeRemaining : function
+RUNE_STATUS_UNKNOWN : number
+tostring : function
+TEAM_NONE : number
+GetBot : function
+rawget : function
+DAMAGE_TYPE_MAGICAL : number
+BOT_MODE_DEFEND_ALLY : number
+BOT_MODE_DESIRE_HIGH : number
+HEROPICK_STATE_CM_SELECT6 : number
+Max : function
+GAME_STATE_INIT : number
+ipairs : function
+BOT_ACTION_DESIRE_NONE : number
+CMBanHero : function
+print : function
+printstack : function
+RUNE_REGENERATION : number
+pcall : function
+gcinfo : function
+HEROPICK_STATE_CM_BAN8 : number
+GetRoshanDesire : function
+RandomInt : function
+BOT_MODE_WARD : number
+RollPercentage : function
+BOT_MODE_ROAM : number
+HERO_PICK_STATE_ARDM_SELECT : number
+string : table
+RUNE_DOUBLEDAMAGE : number
+DIFFICULTY_MEDIUM : number
+HEROPICK_STATE_CM_SELECT5 : number
+BOT_MODE_DESIRE_ABSOLUTE : number
+DIFFICULTY_UNFAIR : number
+RUNE_INVALID : number
+HEROPICK_STATE_SELECT_PENALTY : number
+BOT_MODE_DESIRE_LOW : number
+GAME_STATE_PRE_GAME : number
+HEROPICK_STATE_CM_SELECT9 : number
+HEROPICK_STATE_ALL_DRAFT_SELECT : number
+RUNE_ILLUSION : number
+DIFFICULTY_PASSIVE : number
+HERO_PICK_STATE_ABILITY_DRAFT_SELECT : number
+HEROPICK_STATE_BD_SELECT : number
+DIFFICULTY_INVALID : number
+HEROPICK_STATE_CD_PICK : number
+GAME_STATE_TEAM_SHOWCASE : number
+HEROPICK_STATE_CD_SELECT10 : number
+RemapVal : function
+HEROPICK_STATE_CM_BAN6 : number
+BOT_MODE_PUSH_TOWER_MID : number
+load : function
+GetSelectedHeroName : function
+GetHeroPickState : function
+type : function
+HEROPICK_STATE_CD_SELECT9 : number
+HEROPICK_STATE_CD_SELECT8 : number
+HEROPICK_STATE_CD_SELECT7 : number
+HEROPICK_STATE_CM_BAN10 : number
+HEROPICK_STATE_CD_SELECT6 : number
+BOT_MODE_LANING : number
+HEROPICK_STATE_CD_SELECT5 : number
+HEROPICK_STATE_CD_SELECT4 : number
+HEROPICK_STATE_CD_SELECT3 : number
+HEROPICK_STATE_CD_SELECT2 : number
+HEROPICK_STATE_CD_SELECT1 : number
+HEROPICK_STATE_AP_SELECT : number
+PURCHASE_ITEM_OUT_OF_STOCK : number
+HEROPICK_STATE_CD_BAN6 : number
+BOT_MODE_ASSEMBLE_WITH_HUMANS : number
+IsInCMBanPhase : function
+xpcall : function
+HEROPICK_STATE_CM_SELECT7 : number
+BOT_MODE_TEAM_ROAM : number
+HEROPICK_STATE_CD_BAN5 : number
+HEROPICK_STATE_CD_BAN4 : number
+CDOTA_Bot_Script : table
+GAME_STATE_LAST : number
+LANE_MID : number
+BOT_ACTION_DESIRE_VERYHIGH : number
+HEROPICK_STATE_CD_BAN3 : number
+HEROPICK_STATE_CM_BAN1 : number
+BOT_MODE_DEFEND_TOWER_BOT : number
+HEROPICK_STATE_CD_BAN2 : number
+HEROPICK_STATE_CD_BAN1 : number
+loadstring : function
+BOT_MODE_EVASIVE_MANEUVERS : number
+GetItemStockCount : function
+HEROPICK_STATE_CD_CAPTAINPICK : number
+HEROPICK_STATE_CD_INTRO : number
+CDOTA_TeamCommander : table
+BOT_MODE_FARM : number
+HEROPICK_STATE_FH_SELECT : number
+HEROPICK_STATE_MO_SELECT : number
+BOT_MODE_NONE : number
+package : table
+HEROPICK_STATE_CM_SELECT3 : number
+HEROPICK_STATE_AR_SELECT : number
+loadfile : function
+
+HEROPICK_STATE_CM_PICK : number
+IsLocationPassable : function
+HEROPICK_STATE_CM_SELECT10 : number
+HEROPICK_STATE_CM_SELECT8 : number
+BOT_MODE_DEFEND_TOWER_MID : number
+BOT_MODE_SECRET_SHOP : number
+RUNE_BOUNTY : number
+collectgarbage : function
+HEROPICK_STATE_CM_SELECT4 : number
+
+PURCHASE_ITEM_NOT_AT_SECRET_SHOP : number
+
+HEROPICK_STATE_CM_SELECT2 : number
+BOT_MODE_ASSEMBLE : number
+select : function
+HEROPICK_STATE_CM_SELECT1 : number
+unpack : function
+getfenv : function
+PURCHASE_ITEM_DISALLOWED_ITEM : number
+RUNE_INVISIBILITY : number
+DAMAGE_TYPE_ALL : number
+HEROPICK_STATE_CM_BAN5 : number
+DIFFICULTY_EASY : number
+assert : function
+Clamp : function
+HEROPICK_STATE_CM_BAN7 : number
+GetHeightLevel : function
+HEROPICK_STATE_CM_BAN4 : number
+tonumber : function
+HEROPICK_STATE_CM_BAN3 : number
+BOT_MODE_DESIRE_VERYLOW : number
+TEAM_DIRE : number
+BOT_ACTION_DESIRE_HIGH : number
+HEROPICK_STATE_CM_INTRO : number
+HEROPICK_STATE_SD_SELECT : number
+BOT_MODE_DESIRE_MODERATE : number
+BOT_MODE_DESIRE_NONE : number
+GAME_STATE_WAIT_FOR_MAP_TO_LOAD : number
+bit : table
+GAME_STATE_DISCONNECT : number
+GAME_STATE_WAIT_FOR_PLAYERS_TO_LOAD : number
+GetRoamDesire : function
+Warning : function
+GAME_STATE_GAME_IN_PROGRESS : number
+GetRoamTarget : function
+GAME_STATE_STRATEGY_TIME : number
+BOT_MODE_RETREAT : number
+BOT_ACTION_DESIRE_ABSOLUTE : number
+GAME_STATE_POST_GAME : number
+GAME_STATE_HERO_SELECTION : number
+GetUnitToUnitDistance : function
+LANE_TOP : number
+GetGameStateTimeRemaining : function
+LANE_NONE : number
+rawset : function
+RUNE_ARCANE : number
+Vector : function
+
+TEAM_NEUTRAL : number
+HEROPICK_STATE_CM_CAPTAINPICK : number
+TEAM_RADIANT : number
+rawequal : function
+
+GetWorldBounds : function
+IsInCMPickPhase : function
+HEROPICK_STATE_NONE : number
+
+RUNE_STATUS_AVAILABLE : number
+
+CMPickHero : function
+next : function
+CDOTABaseAbility_BotScript : table
+RUNE_HASTE : number
+DebugDrawCircle : function
+GetTeam : function
+GetItemCost : function
+BOT_ACTION_DESIRE_VERYLOW : number
