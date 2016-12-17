@@ -67,6 +67,35 @@ local hero_ability_names = {
     "vengefulspirit_magic_missile",
     "vengefulspirit_nether_swap",
     "vengefulspirit_wave_of_terror"
+  },
+
+  ["npc_dota_hero_bane"] = {
+    "bane_brain_sap",
+    "bane_enfeeble",
+    "bane_fiends_grip",
+    "bane_nightmare",
+    "bane_nightmare_end"
+  },
+
+  ["npc_dota_hero_witch_doctor"] = {
+    "witch_doctor_death_ward",
+    "witch_doctor_maledict",
+    "witch_doctor_paralyzing_cask",
+    "witch_doctor_voodoo_restoration"
+  },
+
+  ["npc_dota_hero_pudge"] = {
+    "pudge_dismember",
+    "pudge_flesh_heap",
+    "pudge_meat_hook",
+    "pudge_rot"
+  },
+
+  ["npc_dota_hero_sniper"] = {
+    "sniper_assassinate",
+    "sniper_headshot",
+    "sniper_shrapnel",
+    "sniper_take_aim"
   }
 };
 

@@ -98,7 +98,7 @@ end
 
 function WalkDownLane(bot)
   local target = GetLocationAlongLane(LANE_MID, 0.9);
-  bot:Action_MoveToLocation(target);
+  bot:Action_AttackMove(target);
 end
 
 function IsAttacking(bot)
