@@ -17,11 +17,13 @@ function DebugDrawMap()
   --DebugDrawJungle(map.jungle.radiant_primary);
   --DebugDrawJungle(map.jungle.radiant_secondary);
 
-  DebugDrawJungle(map.jungle.dire_primary);
-  DebugDrawJungle(map.jungle.dire_secondary);
+  --DebugDrawJungle(map.jungle.dire_primary);
+  --DebugDrawJungle(map.jungle.dire_secondary);
 end
 
 local bot = GetBot();
+print("NEW BOT! " .. bot:GetUnitName());
+
 local bot_abilities = abilities.GetAbilities(bot);
 
 function Think()
@@ -161,7 +163,7 @@ end
 
 function AttackNearbyHeroes(bot)
 
-  local enemies = bot:GetNearbyHeroes(700, true, BOT_MODE_NONE);
+  local enemies = bot:GetNearbyHeroes(700, true, BOT_MODE_NONE) or {};
   for i, v in pairs(enemies) do
     bot:Action_AttackUnit(v, false);
     return true;

@@ -238,6 +238,41 @@ local hero_ability_names = {
     "jakiro_ice_path",
     "jakiro_liquid_fire",
     "jakiro_macropyre"
+  },
+
+  ["npc_dota_hero_meepo"] = {
+    "meepo_divided_we_stand",
+    "meepo_earthbind",
+    "meepo_geostrike",
+    "meepo_poof"
+  },
+
+  ["npc_dota_hero_visage"] = {
+    "visage_gravekeepers_cloak",
+    "visage_grave_chill",
+    "visage_soul_assumption",
+    "visage_summon_familiars",
+  },
+
+  ["npc_dota_hero_broodmother"] = {
+    "broodmother_incapacitating_bite",
+    "broodmother_insatiable_hunger",
+    "broodmother_spawn_spiderlings",
+    "broodmother_spin_web"
+  },
+
+  ["npc_dota_hero_phantom_lancer"] = {
+    "phantom_lancer_doppelwalk",
+    "phantom_lancer_juxtapose",
+    "phantom_lancer_phantom_edge",
+    "phantom_lancer_spirit_lance"
+  },
+
+  ["npc_dota_hero_furion"] = {
+    "furion_force_of_nature",
+    "furion_sprout",
+    "furion_teleportation",
+    "furion_wrath_of_nature"
   }
 };
 
