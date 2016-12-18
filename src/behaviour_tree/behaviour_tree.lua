@@ -31,9 +31,7 @@ function module.new(root)
 end
 
 if test then
-  test("Stuff", function()
-    assert(false, "todo")
-  end)
+
 end
 
 return module;

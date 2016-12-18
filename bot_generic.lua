@@ -1,7 +1,31 @@
 local abilities = require(GetScriptDirectory() .. "/src/game/dota_abilities");
+local map = require(GetScriptDirectory() .. "/src/game/dota_map");
+
+function DebugDrawJungle(jungle)
+  for _, camp in ipairs(jungle) do
+    local prev = camp.farm_spot;
+    DebugDrawCircle(prev, 10, 255, 100, 0);
+    for _, p in ipairs(camp.pull_path) do
+      DebugDrawLine(prev, p, 0, 255, 0);
+      DebugDrawCircle(p, 10, 0, 255, 100);
+      prev = p;
+    end
+  end
+end
+
+function DebugDrawMap()
+  --DebugDrawJungle(map.jungle.radiant_primary);
+  --DebugDrawJungle(map.jungle.radiant_secondary);
+
+  DebugDrawJungle(map.jungle.dire_primary);
+  DebugDrawJungle(map.jungle.dire_secondary);
+end
+
+local bot = GetBot();
+local bot_abilities = abilities.GetAbilities(bot);
 
 function Think()
-  local bot = GetBot();
+  DebugDrawMap();
 
   --Try to buy items
   if TryToBuyItems(bot) then
@@ -22,7 +46,7 @@ function Think()
   end
 
   --Flee!
-  if bot:GetHealth() < bot:GetMaxHealth() * 0.65 then
+  if bot:GetHealth() < bot:GetMaxHealth() * 0.35 then
     if TP_To_Fountain(bot) then
       return;
     end
@@ -30,6 +54,9 @@ function Think()
 
   --If we're already attacking a target finish off what we're doing before changing
   if IsAttacking(bot) then
+    if RandomFloat(0, 1) > 0.9 then
+      UseARandomAbility();
+    end
     return;
   end
 
@@ -37,7 +64,23 @@ function Think()
   WalkDownLane(bot)
 
   --Find a target to attack
-  local doing_stuff = AttackNearbyHeroes(bot) or AttackNearbyBuildings(bot) or AttackNearbyCreeps(bot);
+  local doing_stuff = AttackNearbyHeroes(bot) or AttackNearbyBuildings(bot) AttackNearbyCreepsWithoutPushingLane(bot);
+end
+
+function UseARandomAbility()
+
+  if not bot:GetAttackTarget():IsHero() then
+    return;
+  end
+
+  for k, v in pairs(bot_abilities) do
+
+    --we don't know what the hell we're trying to cast, or how to cast it. Just try all the possibilities!
+    if v:IsFullyCastable() then bot:Action_UseAbility(v); end
+    if v:IsFullyCastable() then bot:Action_UseAbilityOnEntity(v, bot:GetAttackTarget()); end
+    if v:IsFullyCastable() then bot:Action_UseAbilityOnLocation(v, bot:GetAttackTarget():GetExtrapolatedLocation(0.15)); end
+
+  end
 end
 
 function TryToBuyItems(bot)
@@ -45,7 +88,6 @@ function TryToBuyItems(bot)
 end
 
 function TryToLevel(bot)
-  local bot_abilities = abilities.GetAbilities(bot);
   for k, v in pairs(bot_abilities) do
     if v:GetLevel() < v:GetMaxLevel() then
       v:UpgradeAbility();
@@ -97,7 +139,7 @@ function TP_To_Fountain(bot)
 end
 
 function WalkDownLane(bot)
-  local target = GetLocationAlongLane(LANE_MID, 0.9);
+  local target = GetLocationAlongLane(LANE_MID, 0.99);
   bot:Action_AttackMove(target);
 end
 
@@ -141,12 +183,31 @@ function AttackNearbyBuildings(bot)
 
 end
 
-function AttackNearbyCreeps(bot)
+function AttackNearbyCreepsWithoutPushingLane(bot)
 
-  local enemies = bot:GetNearbyCreeps(700, true);
-  for i, v in pairs(enemies) do
-    bot:Action_AttackUnit(v, false);
-    return true;
+  local enemies = bot:GetNearbyCreeps(750, true);
+
+  --Find the enemy on lowest health
+  local lowest_hp = 9999999;
+  local lowest = nil;
+  for _, v in pairs(enemies) do
+    local hp = v:GetHealth();
+    if hp < lowest_hp then
+      lowest_hp = hp;
+      lowest = v;
+    end
+  end
+
+  if lowest then
+
+    --we found a creep, but can we one shot it to get the last hit?
+    local estimated_damage = bot:GetEstimatedDamageToTarget(false, lowest, 1, DAMAGE_TYPE_PHYSICAL);
+    if estimated_damage > lowest_hp then
+      --print(string.format("Attacking %s %s > %s", lowest:GetUnitName(), estimated_damage, lowest_hp));
+      bot:Action_AttackUnit(lowest, false);
+      return true;
+    end
+
   end
 
   return false;

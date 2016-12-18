@@ -6,6 +6,9 @@ return {
 
   "src/core/readonly.lua",
 
+  "src/game/dota_abilities.lua",
+  "src/game/dota_map.lua",
+
   "src/behaviour_tree/behaviour_tree.lua",
   "src/behaviour_tree/nodes/condition.lua",
   "src/behaviour_tree/nodes/coroutine.lua",

@@ -46,7 +46,7 @@ DebugDrawText(\_, \_, \_, \_, \_, \_)
  - Some Debugging pulled out the required types: `DebugDrawText(float, float, cstring, integer, integer, integer)`
  - It seems reasonable to guess this is `x, y, message, r, g, b` however this does not print text at the expected location. Maybe there's a command to toggle visibility?
 
-DebugDrawLine(start, end, r, g, g)
+DebugDrawLine(start, end, r, g, b)
  - `start` is a `Vector(x, y, z)`
  - `end` is a `Vector(x, y, z)`
  - `r, g, b` are all values [0, 255] which together specify the colour
