@@ -6,6 +6,7 @@ return {
 
   "src/core/readonly.lua",
 
+  "src/game/data/items_parser.lua",
   "src/game/dota_abilities.lua",
   "src/game/dota_map.lua",
 

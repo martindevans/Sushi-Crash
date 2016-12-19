@@ -146,7 +146,7 @@ GetCMCaptain : function
 GetDefendLaneDesire : function
 math : table
 GetFarmLaneDesire : function
-_G : table
+\_G : table
 GetPushLaneDesire : function
 LANE_BOT : number
 BOT_MODE_PUSH_TOWER_BOT : number
@@ -159,7 +159,6 @@ RUNE_STATUS_MISSING : number
 GetCMPhaseTimeRemaining : function
 RUNE_STATUS_UNKNOWN : number
 tostring : function
-
 rawget : function
 DAMAGE_TYPE_MAGICAL : number
 BOT_MODE_DEFEND_ALLY : number

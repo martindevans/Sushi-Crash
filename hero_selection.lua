@@ -14,7 +14,7 @@ requiredHeroes = {
 -- change quickMode to true for testing
 -- quickMode eliminates the 30s delay before picks begin
 -- it also eliminates the delay between bot picks
-quickMode = false;
+quickMode = true;
 
 allBotHeroes = {
 		'npc_dota_hero_axe',
