@@ -5,6 +5,7 @@ return {
   "src/tests/demo_tests.lua",
 
   "src/core/readonly.lua",
+  "src/core/serialization.lua",
 
   "src/game/data/items_parser.lua",
   "src/game/dota_abilities.lua",

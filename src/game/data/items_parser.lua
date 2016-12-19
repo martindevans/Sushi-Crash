@@ -118,6 +118,43 @@ if test then
     assert(ast.A.B, "expected A.B to not be nil");
     assert(ast.A.B == "C", "Expected A.B='C', but A.B ='" .. tostring(ast.A.B) .. "'");
   end);
+
+  test("Parse table contains nested table data and sibling key/value", function()
+    local ast = module.parse("\"DOTAAbilities\"\n{\n\"A\"\n{\n\"B\" \"C\"\n}\n\"D\" \"E\"\n}");
+
+    assert(ast.A, "expected A to not be nil");
+    assert(ast.A.B, "expected A.B to not be nil");
+    assert(ast.A.B == "C", "expected A.B='C', but A.B ='" .. tostring(ast.A.B) .. "'");
+    assert(ast.D == "E", "expected D='E', but D='" .. tostring(ast.D) .. "'");
+  end);
+
+  test("Parse everything", function()
+    local f = io.open("src/game/data/items.txt", "rb");
+    local content = f:read("*all");
+    f:close();
+
+    local ast = module.parse(content);
+    assert(ast.Version == "1", "expected Version='1', but Version='" .. tostring(ast.Version) .. "'");
+    assert(ast.item_blink.ID == "1", "expected item_blink.ID='1', but item_blink.ID='" .. tostring(ast.item_blink.ID) .. "'")
+  end);
 end
+
+--write out the file in a format which can be loaded by lua
+--[[
+if io then
+  local f = io.open("src/game/data/items.txt", "rb");
+  local content = f:read("*all");
+  f:close();
+
+  local serialize = require("src/core/serialization");
+  local ast = module.parse(content);
+  local s = serialize.tostring(ast);
+
+  local fo = io.open("src/game/data/items.lua", "w");
+  fo:write(s);
+  fo:flush();
+  fo:close();
+end
+]]
 
 return module;
