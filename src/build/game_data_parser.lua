@@ -129,7 +129,7 @@ if test then
   end);
 
   test("Parse everything", function()
-    local f = io.open("src/game/data/items.txt", "rb");
+    local f = io.open("src/build/data/items.txt", "rb");
     local content = f:read("*all");
     f:close();
 
@@ -139,22 +139,35 @@ if test then
   end);
 end
 
---write out the file in a format which can be loaded by lua
---[[
-if io then
-  local f = io.open("src/game/data/items.txt", "rb");
+--write out the file in a format which can be loaded by lua as a great big table
+if not test and io and arg then
+  local f = io.open(arg[1], "rb");
   local content = f:read("*all");
   f:close();
 
   local serialize = require("src/core/serialization");
   local ast = module.parse(content);
-  local s = serialize.tostring(ast);
+  local s = serialize.tostring(ast, function(t)
+    --We're serializing a table. Is it an "array", which in this case means the keys are all string which parse to integers, starting at 1
+    local array = {};
+    for k, v in pairs(t) do
+      --Parse it to an integral number?
+      local num = tonumber(k);
+      if num == nil or num ~= math.floor(num) then
+        return t;
+      else
+        array[num] = v;
+      end
+    end
 
-  local fo = io.open("src/game/data/items.lua", "w");
+    --If we got here every key successfully parsed into an integer.
+    return array;
+
+  end);
+
+  local fo = io.open(arg[2], "w");
+  fo:write("--" .. os.date("Built at %c\n"))
   fo:write(s);
   fo:flush();
   fo:close();
 end
-]]
-
-return module;

@@ -3,9 +3,11 @@ $saved_path = $env:LUA_PATH
 $env:LUA_PATH = $env:LUA_PATH + ";" + $pwd.Path + "\?"
 $env:LUA_PATH = $env:LUA_PATH + ";" + $pwd.Path + "\?.lua"
 
+# Perform a few build tasks. All build tasks spit out a lua file somewhere
 try
 {
-    lua src/tests/run_tests.lua
+    lua src/build/game_data_parser.lua (Resolve-Path "src/build/data/items.txt").Path ((Resolve-Path "src/game/data/").Path + "items.lua")
+    lua src/build/game_data_parser.lua (Resolve-Path "src/build/data/npc_heroes.txt").Path ((Resolve-Path "src/game/data/").Path + "heroes.lua")
 }
 finally
 {

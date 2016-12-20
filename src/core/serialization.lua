@@ -1,43 +1,55 @@
 local module = {};
 
-local function val_to_str(v)
-  if "string" == type( v ) then
+local function val_to_str(v, func_tbl)
+
+  local typ = type(v);
+
+  if typ == "table" then
+    return module.tostring(func_tbl(v), func_tbl);
+  end
+
+  if typ == "string" then
     v = string.gsub( v, "\n", "\\n" )
     if string.match( string.gsub(v,"[^'\"]",""), '^"+$' ) then
       return "'" .. v .. "'"
     end
     return '"' .. string.gsub(v,'"', '\\"' ) .. '"'
-  elseif type(v) == "table" then
-    return module.tostring(v);
-  else
-    return tostring(v);
   end
+
+  return tostring(v);
 end
 
-local function key_to_str ( k )
+local function key_to_str(k, func_tbl)
   if type(k) == "string" and string.match( k, "^[_%a][_%a%d]*$" ) then
     return k;
   else
-    return "[" .. val_to_str( k ) .. "]";
+    return "[" .. val_to_str(k, func_tbl) .. "]";
   end
 end
 
 --Serialize a table into a string which can be loaded by lua (as a table)
-function module.tostring(tbl, func_val, func_tbl)
+function module.tostring(tbl, func_tbl)
+
+  func_tbl = func_tbl or function(a) return a; end;
 
   assert(type(tbl) == "table");
+  assert(type(func_tbl) == "function", "func_tbl must be a function. Type=" .. type(func_tbl));
 
   local result, done = {}, {}
+
   for k, v in ipairs( tbl ) do
-    table.insert( result, val_to_str( v ) )
-    done[ k ] = true
+    table.insert(result, val_to_str(v, func_tbl))
+    done[k] = true
   end
-  for k, v in pairs( tbl ) do
-    if not done[ k ] then
-      table.insert( result, key_to_str( k ) .. "=" .. val_to_str( v ) )
+  for k, v in pairs(tbl) do
+
+    if not done[k] then
+      local kk = key_to_str(k, func_tbl);
+      local vv = val_to_str(v, func_tbl);
+      table.insert(result, kk .. "=" .. vv)
     end
   end
-  return "{" .. table.concat( result, "," ) .. "}"
+  return "{" .. table.concat(result, ",") .. "}"
 end
 
 if test then
@@ -54,7 +66,7 @@ if test then
   test("Table with nested table serializes", function()
     local s = module.tostring({a={b=2}});
     assert(s == "{a={b=2}}", s);
-  end)
+  end);
 end
 
 return module;
