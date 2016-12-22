@@ -68,6 +68,9 @@ local function run_test_file(path)
     local status, run_err = pcall(setfenv(loaded, env));
     if not status then
       print(" - CRIT - Running test file '" .. path .. "' encountered error '" .. run_err .. "'");
+      for i, s in ipairs(printed) do
+        print("   > " .. s);
+      end
       return 1, 0, 1;
     end
 

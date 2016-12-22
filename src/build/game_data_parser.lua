@@ -43,6 +43,7 @@ end
 --forward define functions
 local parse_table = nil;
 local parse_table_data = nil;
+local parse_loadout_table = nil;
 
 local function parse_data_item(line, iter)
   --Determine if this is a single value, or a title of entire new table
@@ -53,7 +54,27 @@ local function parse_data_item(line, iter)
   end
 
   --No Key/Value pair match , so it must be a table
-  return k, parse_table_data(iter);
+  if k == "Loadout" then
+    return k, parse_loadout_table(iter);
+  else
+    return k, parse_table_data(iter);
+  end
+end
+
+parse_loadout_table = function(iter_lines)
+  expect("{", iter_lines);
+
+  local data = {};
+  for line in iter_lines do
+
+    if line == "}" then break; end
+
+    --Parse a single item, this may be a key value pair or an entire new table
+    local k, v = parse_data_item(line, iter_lines);
+    table.insert(data, { item_name = k, items_flags = v });
+    data[k] = v;
+  end
+  return data;
 end
 
 parse_table_data = function(iter_lines)
@@ -147,8 +168,8 @@ if not test and io and arg then
 
   local serialize = require("src/core/serialization");
   local ast = module.parse(content);
-  local s = serialize.tostring(ast, function(t)
-    --We're serializing a table. Is it an "array", which in this case means the keys are all string which parse to integers, starting at 1
+  local s = serialize.tostring(ast, function(t, n)
+    --We're serializing a table. Is it an "array", which in this case means the keys are all strings which parse to integers, starting at 1
     local array = {};
     for k, v in pairs(t) do
       --Parse it to an integral number?
@@ -162,12 +183,12 @@ if not test and io and arg then
 
     --If we got here every key successfully parsed into an integer.
     return array;
-
   end);
 
+  print("Creating file '" .. arg[2] .. "'");
   local fo = io.open(arg[2], "w");
   fo:write("--" .. os.date("Built at %c\n"))
-  fo:write(s);
+  fo:write("return " .. s);
   fo:flush();
   fo:close();
 end
