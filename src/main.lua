@@ -48,19 +48,42 @@ end
 
 local function DebugDrawJungle(jungle)
   for _, camp in ipairs(jungle) do
-    local prev = camp.farm_spot;
-    DebugDrawCircle(prev, 10, 255, 100, 0);
-    for _, p in ipairs(camp.pull_path) do
-      DebugDrawLine(prev, p, 0, 255, 0);
-      DebugDrawCircle(p, 10, 0, 255, 100);
-      prev = p;
+    
+
+    if camp.boundary then
+
+      local first = nil;
+      local prev = nil;
+      for _, p in ipairs(camp.boundary) do
+        DebugDrawCircle(p, 10, 0, 50, 255);
+        if prev then
+          DebugDrawLine(prev, p, 0, 100, 0);
+        end
+        if not first then
+          first = p;
+        end
+        prev = p;
+      end
+      if prev and first then
+        DebugDrawLine(prev, first, 0, 100, 0);
+      end
+
+      local prev = camp.farm_spot;
+      DebugDrawCircle(prev, 10, 255, 100, 0);
+      for _, p in ipairs(camp.pull_path) do
+        DebugDrawLine(prev, p, 0, 255, 0);
+        DebugDrawCircle(p, 10, 0, 255, 100);
+        prev = p;
+      end
     end
   end
 end
 
 local function DebugDrawMap()
-  --DebugDrawJungle(map.jungle.radiant_primary);
-  --DebugDrawJungle(map.jungle.radiant_secondary);
+  if bot:GetPlayer() ~= 2 then return; end
+
+  DebugDrawJungle(map.jungle.radiant_primary);
+  DebugDrawJungle(map.jungle.radiant_secondary);
 
   --DebugDrawJungle(map.jungle.dire_primary);
   --DebugDrawJungle(map.jungle.dire_secondary);
@@ -84,8 +107,8 @@ end
 
 local function TryToLevel(bot)
   for k, v in pairs(bot_abilities) do
-    if v:GetLevel() < v:GetMaxLevel() then
-      v:UpgradeAbility();
+    if v:GetLevel() < v:GetMaxLevel() and v:CanAbilityBeUpgraded() then
+      bot:Action_LevelAbility(v:GetName());
     end
   end
 end
@@ -209,8 +232,15 @@ local function AttackNearbyCreepsWithoutPushingLane(bot)
 
 end
 
+function TrashTalk()
+  if RandomFloat(0, 1) > 0.99 then
+    bot:Action_Chat("???", true);
+  end
+end
+
 local module = {};
 module.Think = function()
+
   DebugDrawMap();
 
   --Try to buy items
@@ -240,7 +270,7 @@ module.Think = function()
 
   --If we're already attacking a target finish off what we're doing before changing
   if IsAttacking(bot) then
-    if RandomFloat(0, 1) > 0.9 then
+    if RandomFloat(0, 1) > 0.99 then
       UseARandomAbility();
     end
     return;
@@ -251,6 +281,12 @@ module.Think = function()
 
   --Find a target to attack
   local doing_stuff = AttackNearbyHeroes(bot) or AttackNearbyBuildings(bot) AttackNearbyCreepsWithoutPushingLane(bot);
+
+  --Trash talk (very important!)
+  local target = bot:GetAttackTarget();
+  if target and not target:IsAlive() and target:IsHero() then
+    TrashTalk();
+  end
 end
 
 return module;

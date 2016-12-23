@@ -1,8 +1,46 @@
 --Get positions with `dota_camera_get_lookatpos` which returns the position the camera is looking at
 local map = {
+
+  rune = {
+    bounty = {
+      radiant_primary = {
+        id = RUNE_BOUNTY_1,
+        location = GetRuneSpawnLocation(RUNE_BOUNTY_1)
+      },
+      radiant_secondary = {
+        id = RUNE_BOUNTY_2,
+        location = GetRuneSpawnLocation(RUNE_BOUNTY_2)
+      },
+      dire_primary = {
+        id = RUNE_BOUNTY_3,
+        location = GetRuneSpawnLocation(RUNE_BOUNTY_3)
+      },
+      dire_secondary = {
+        id = RUNE_BOUNTY_4,
+        location = GetRuneSpawnLocation(RUNE_BOUNTY_4)
+      }
+    },
+    power = {
+      top = {
+        id = RUNE_POWERUP_1,
+        location = GetRuneSpawnLocation(RUNE_POWERUP_1)
+      },
+      bottom = {
+        id = RUNE_POWERUP_2,
+        location = GetRuneSpawnLocation(RUNE_POWERUP_2)
+      }
+    }
+  },
+
   jungle = {
     radiant_primary = {
       {
+        boundary = {
+          Vector(-2192.562744, -3768.654785, 278.637390),
+          Vector(-1442.738159, -3767.494385, 267.677673),
+          Vector(-1451.903809, -4654.895020, 293.377808),
+          Vector(-2210.875000, -4697.000000, 272.254700)
+        },
         farm_spot = Vector(-1780.731689, -3910.019287, 274.012909);
         pull_path = {
           Vector(-2027.131836, -3579.098633, 272.058624),
@@ -10,6 +48,12 @@ local map = {
         }
       },
       {
+        boundary = {
+          Vector(-1228.843750, -3609.156250, 288.613495),
+          Vector(-1227.250000, -2950.031250, 283.818542),
+          Vector(-15.508785, -2970.616211, 311.680908),
+          Vector(-15.875000, -3626.281250, 333.992188)
+        },
         farm_spot = Vector(-779.289673, -3299.927979, 280.345947);
         pull_path = {
           Vector(-1280.312500, -3295.500000, 271.027252),
@@ -17,6 +61,12 @@ local map = {
         }
       },
       {
+        boundary = {
+          Vector(153.468750, -4096.812500, 369.068909),
+          Vector(1138.000000, -4093.500000, 371.376892),
+          Vector(1131.312500, -5109.843750, 379.409180),
+          Vector(152.593750, -5111.250000, 384.392487)
+        },
         farm_spot = Vector(677.943604, -4428.918945, 372.274414);
         pull_path = {
           Vector(655.768738, -4036.084473, 374.568726),

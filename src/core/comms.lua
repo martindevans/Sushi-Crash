@@ -12,10 +12,15 @@ function module.Load(g, env)
         };
     end
 
+    local bot = nil;
     env._LOADED[GetScriptDirectory() .. "/src/core/comms"] = {
 
         --Register a new bot with the comms system. Returns a handle which can be used to access the rest of the comms system
-        RegisterBot = function(bot)
+        RegisterBot = function(bot_registering)
+
+            assert(bot == nil, "Cannot register a bot twice");
+            bot = bot_registering;
+
             local team = GetTeamForPlayer(bot:GetPlayer());
 
             --return a table of stuff which the comms system can do for this specific player
