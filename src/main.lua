@@ -1,6 +1,7 @@
 local map = require("src/game/dota_map");
 local dota_heroes = require("src/game/dota_heroes");
 local dota_items = require("src/game/dota_items");
+local lane = require("src/utility/lane");
 
 local bot = GetBot();
 local bot_abilities = dota_heroes.GetAbilities(bot);
@@ -158,7 +159,7 @@ end
 
 local function WalkDownLane(bot)
   local target = GetLocationAlongLane(LANE_MID, 0.99);
-  bot:Action_AttackMove(target);
+  bot:Action_MoveToLocation(target);
 end
 
 local function IsAttacking(bot)
@@ -232,61 +233,94 @@ local function AttackNearbyCreepsWithoutPushingLane(bot)
 
 end
 
-function TrashTalk()
-  if RandomFloat(0, 1) > 0.99 then
-    bot:Action_Chat("???", true);
-  end
+function find_last_hit(enemies, allies)
+    local found_creep = false;
+    for _, creep in pairs(enemies) do
+
+      if creep:IsCreep() then
+        found_creep = true;
+        DebugDrawCircle(creep:GetLocation(), 5, 0, 50, 255);
+        DebugDrawLine(bot:GetLocation(), creep:GetLocation(), 255, 50, 0);
+
+        local incoming_dps = 
+
+        local damage = creep:GetActualDamage(bot:GetBaseDamage(), DAMAGE_TYPE_PHYSICAL);
+        if damage > creep:GetHealth() then
+          return creep, true;
+        end
+      end
+    end
+
+    return nil, found_creep;
 end
 
 local module = {};
 module.Think = function()
 
-  DebugDrawMap();
-
-  --Try to buy items
-  if TryToBuyItems(bot) then
+  --Skip all bots except number 4 (arbitrary choice)
+  if bot:GetPlayer() ~= 7 and bot:GetPlayer() ~= 4 then
+    bot:Action_MoveToLocation(map.rune.bounty.radiant_primary.location);
     return;
   end
-
-  --Try to level abilities
-  TryToLevel(bot);
 
   --Reset back to start state if we're dead
   if not bot:IsAlive() then
     return;
   end
 
+  --Try to level abilities
+  TryToLevel(bot);
+
   --Are we channeling an ability (e.g. a teleport). If so just don't think (average dota2 player *rimshot*)
   if bot:IsChanneling() then
+    print("Channeling");
     return;
   end
 
-  --Flee!
-  if bot:GetHealth() < bot:GetMaxHealth() * 0.35 then
-    if TP_To_Fountain(bot) then
-      return;
+  local loc = GetLaneFrontLocation(TEAM_RADIANT, LANE_MID, -100);
+  DebugDrawCircle(loc, 15, 255, 0, 100);
+  DebugDrawLine(bot:GetLocation(), loc, 255, 50, 100);
+
+  if GetTeam() == TEAM_DIRE then
+    local friendlies = bot:GetNearbyCreeps(1000, false);
+    for _, ally in pairs(friendlies) do
+      if ally:IsCreep() then
+        local target = ally:GetAttackTarget();
+        if target then
+          DebugDrawCircle(target:GetLocation(), 5, 75, 50, 0);
+          DebugDrawLine(ally:GetLocation(), target:GetLocation(), 255, 50, 0);
+        end
+      end
+    end
+
+    local enemies = bot:GetNearbyCreeps(1000, true);
+    for _, enemy in pairs(enemies) do
+      if enemies:IsCreep() then
+        local target = enemies:GetAttackTarget();
+        if target then
+          print("Enemy target")
+          DebugDrawCircle(target:GetLocation(), 5, 75, 50, 0);
+          DebugDrawLine(enemies:GetLocation(), target:GetLocation(), 255, 50, 0);
+        end
+      end
     end
   end
 
-  --If we're already attacking a target finish off what we're doing before changing
-  if IsAttacking(bot) then
-    if RandomFloat(0, 1) > 0.99 then
-      UseARandomAbility();
-    end
-    return;
-  end
-
-  --Set move target to far end of lane (attacking all targets on the way)
-  WalkDownLane(bot)
-
-  --Find a target to attack
-  local doing_stuff = AttackNearbyHeroes(bot) or AttackNearbyBuildings(bot) AttackNearbyCreepsWithoutPushingLane(bot);
-
-  --Trash talk (very important!)
-  local target = bot:GetAttackTarget();
-  if target and not target:IsAlive() and target:IsHero() then
-    TrashTalk();
+  local creeps = bot:GetNearbyCreeps(bot:GetAttackRange() * 0.95, true);
+  local target, any = find_last_hit(creeps);
+  if target then
+    bot:Action_AttackUnit(target, true);
+  else
+    bot:Action_ClearActions(true);
+    bot:Action_MoveToLocation(loc);
   end
 end
 
 return module;
+
+--[[
+
+Last hit logic:
+ - Watch creep health and delta health, attack once expected creep health (projected into future by attack time + projectile speed) is < attack damage
+ - If there are enemy creeps but no friendly creeps in front of you in lane (and you're not going for last hit) retreat until you find friendly creeps
+]]

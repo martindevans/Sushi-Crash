@@ -6,6 +6,7 @@ return {
 
   "src/core/readonly.lua",
   "src/core/serialization.lua",
+  "src/core/linq.lua",
 
   "src/game/dota_heroes.lua",
   "src/game/dota_map.lua",

@@ -15,6 +15,37 @@ end
 
 local module = {};
 
+module.GetAttackInfo = function(bot)
+  local name = bot:GetUnitName();
+  local hero = heroes[name];
+  if not hero then
+    string.format("Warning: Cannot find hero '%s'", name);
+    return {};
+  end
+
+  --[[
+    "AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
+		"AttackDamageMin"		"1"
+		"AttackDamageMax"		"1"
+		"AttackDamageType"		"DAMAGE_TYPE_ArmorPhysical"
+		"AttackRate"		"1.700000"
+		"AttackAnimationPoint"		"0.750000"
+		"AttackAcquisitionRange"		"800"
+		"AttackRange"		"600"
+		"ProjectileModel"		"particles/base_attacks/ranged_hero.vpcf"
+		"ProjectileSpeed"		"900"
+  ]]
+  return {
+    AttackCapabilities = hero.AttackCapabilities;
+    AttackDamageMin = hero.AttackDamageMin,
+    AttackDamageMax = hero.AttackDamageMax,
+    AttackDamageType = hero.AttackDamageType,
+    AttackAnimationPoint = hero.AttackAnimationPoint,
+    AttackRange = hero.AttackRange,
+    ProjectileSpeed = hero.ProjectileSpeed
+  }
+end
+
 module.GetAbilitiesNames = function(bot)
   local name = bot:GetUnitName();
   local hero = heroes[name];

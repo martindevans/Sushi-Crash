@@ -45,7 +45,7 @@ function Think()
       print("Error loading main (for '" .. GetBot():GetUnitName() .. "'): " .. tostring(err));
       return;
     else
-      print("Loaded main for " .. GetBot():GetUnitName());
+      print("Loaded main for " .. GetBot():GetUnitName() .. " at " .. RealTime());
       bot_main_module = setfenv(f, env)();
     end
   end
