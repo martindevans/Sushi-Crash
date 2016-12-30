@@ -90,17 +90,12 @@ local extensions = {
     end,
 
     aggregate = function(t)
-        return function(aggregator)
-            local aggregated = nil;
+        return function(seed, aggregator)
+            local aggregated = seed;
             local firstIteration = true;
 
             while t.move_next() do
-                if firstIteration then
-                    aggregated = t.current();
-                    firstIteration = false;
-                else
-                    aggregated = aggregator(aggregated, t.current());
-                end
+                aggregated = aggregator(aggregated, t.current());
             end
 
             return aggregated;
@@ -156,6 +151,12 @@ local t = {}
     --If you try to access a value on the table which doesn't exist it falls back here
     --If it's one of the known values, run the function and return that value as the value
     mt.__index = function(tbl, key)
+
+        --Check that we're not doing anything with an enuemration which has already started (someone forgot to call .clone() on a shared enumerator)
+        if started then
+            error("Cannot access a query extensions after enumeration has already started");
+        end
+
         local ext = extensions[key];
         if ext then
             local func = ext(tbl);
@@ -164,6 +165,10 @@ local t = {}
         end
 
         return nil;
+    end
+
+    t.clone = function()
+        return module.from_generator(generator);
     end
 
     --Get the current value of the enumerator
@@ -193,6 +198,34 @@ module.from_array = function(arr)
 end
 
 if test then
+    test("Shared enumerator access", function()
+        local enumerator = module.from_array({ 3, 7, 2, 1, 9, 11 });
+
+        local lt4 = enumerator.clone().where(function(a) return a < 4; end).to_array();
+        local gt4 = enumerator.clone().where(function(a) return a > 4; end).to_array();
+
+        assert(lt4[1] == 3);
+        assert(lt4[2] == 2);
+        assert(lt4[3] == 1);
+        assert(#lt4 == 3);
+
+        assert(gt4[1] == 7);
+        assert(gt4[2] == 9);
+        assert(gt4[3] == 11);
+        assert(#gt4 == 3);
+    end);
+
+    test("Cannot extend enuemration after it is started", function()
+        local enumerator = module.from_array({ 3, 7, 2, 1, 9, 11 });
+
+        --Started the enumeration
+        enumerator.move_next();
+
+        expect_error(function()
+            enumerator.where(function(a) return a > 4; end);
+        end);
+    end);
+
     test("array enumerator contains all values", function()
         local enumerator = module.from_array({ 3, 7, 2, 1, 9, 11 });
 
@@ -278,7 +311,7 @@ if test then
 
     test("aggregate aggregates values", function()
         local enumerator = module.from_array({ 3, 7, 2, 1, 9, 11 });
-        local sum = enumerator.aggregate(function(a, b) return a + b end);
+        local sum = enumerator.aggregate(0, function(a, b) return a + b end);
 
         assert(sum == 33);
     end);

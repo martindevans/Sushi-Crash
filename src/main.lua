@@ -2,6 +2,7 @@ local map = require("src/game/dota_map");
 local dota_heroes = require("src/game/dota_heroes");
 local dota_items = require("src/game/dota_items");
 local lane = require("src/utility/lane");
+local linq = require("src/core/linq");
 
 local bot = GetBot();
 local bot_abilities = dota_heroes.GetAbilities(bot);
@@ -242,8 +243,6 @@ function find_last_hit(enemies, allies)
         DebugDrawCircle(creep:GetLocation(), 5, 0, 50, 255);
         DebugDrawLine(bot:GetLocation(), creep:GetLocation(), 255, 50, 0);
 
-        local incoming_dps = 
-
         local damage = creep:GetActualDamage(bot:GetBaseDamage(), DAMAGE_TYPE_PHYSICAL);
         if damage > creep:GetHealth() then
           return creep, true;
@@ -254,73 +253,156 @@ function find_last_hit(enemies, allies)
     return nil, found_creep;
 end
 
+local function bounding_circle(units) --returns (center, radius) or (nil, nil) if there were no units
+  local sum = Vector(0, 0);
+  local cnt = 0;
+  for _, v in pairs(units) do
+    if v:IsAlive() then
+      cnt = cnt + 1;
+      sum = sum + v:GetLocation();
+    end
+  end
+
+  if cnt == 0 then
+    return nil, nil;
+  end
+
+  local center = sum / cnt;
+
+  local rad = 0;
+  for _, v in pairs(units) do
+    local d = GetUnitToLocationDistance(v, center);
+    rad = math.max(rad, d);
+  end
+
+  print(tostring(center) .. " " .. tostring(rad));
+  return center, rad;
+end
+
+local function wait_until(predicate)
+  repeat
+    coroutine.yield();
+  until predicate();
+end
+
+local function wait_for_duration(seconds, tick)
+  local start = DotaTime();
+  while DotaTime() - start < seconds do
+    if tick then tick(); end
+    coroutine.yield();
+  end
+end
+
+local function estimate_time_to_die(target, aggressors) --return (time_to_die, incoming_dps)
+  local incoming_dps = linq.from_array(aggressors)
+      .where(function(a) return a:GetAttackTarget() == target; end)
+      .select(function(a) return a:GetBaseDamage() / a:GetSecondsPerAttack(); end)
+      .aggregate(0, function(a, b) return a + b end);
+
+  return target:GetHealth() / incoming_dps, incoming_dps
+end
+
+local function main_co()
+
+  local attack = dota_heroes.GetAttackInfo(bot);
+
+  --Stay with the wave front until we see enemy creeps in range
+  wait_until(function()
+    --Find enemies in sight
+    local enemies = bot:GetNearbyCreeps(1500, true);
+
+    --if we see no creeps advance to the wave front
+    if #enemies == 0 then
+      local loc = GetLaneFrontLocation(GetTeam(), LANE_MID, 0);
+      bot:Action_MoveToLocation(loc);
+    end
+
+    print("Waiting for enemies");
+    return #enemies > 0;
+  end);
+
+  --Find enemies and allies in sight
+  enemies = bot:GetNearbyCreeps(1500, true);
+  allies = bot:GetNearbyCreeps(1500, false);
+
+  --Find the enemy creep which is most likely to die first
+  local best_target = linq.from_array(enemies).select(function(c)
+
+    local ttd, idps = estimate_time_to_die(c, allies);
+
+    return {
+      time_to_die = ttd,
+      incoming_dps = idps,
+      unit = c,
+    }
+  end).aggregate(nil, function(a, b)
+    if not a then return b; end
+    if a.time_to_die < b.time_to_die then return a; else return b; end
+  end);
+
+  --Attack that target, but be prepared to cancel the animation before it completes!
+  if best_target then
+    bot:Action_AttackUnit(best_target.unit, true);
+
+    --Wait for attack to *nearly* happen (minus 4 frames);
+    wait_for_duration(bot:GetAttackPoint() - 0.016 * 4);
+
+    if not bot:GetCurrentActionType() == BOT_ACTION_TYPE_ATTACK then
+      print("Not last hitting!");
+    else
+      --ok now we really have to decide if we should cancel the attack or let it happen!
+      local time = GetUnitToUnitDistance(bot, best_target.unit) / attack.ProjectileSpeed;
+      local _, idps = estimate_time_to_die(best_target.unit, bot:GetNearbyCreeps(1500, false));
+      if best_target.unit:GetHealth() - time * idps * 0.75 > best_target.unit:GetActualDamage(bot:GetBaseDamage(), DAMAGE_TYPE_PHYSICAL) * 0.95 then
+        print("Cancelling attack");
+        bot:Action_ClearActions(true);
+      end
+    end
+  else
+    print("No potential targets");
+  end
+
+end
+
 local module = {};
 module.Think = function()
 
-  --Skip all bots except number 4 (arbitrary choice)
-  if bot:GetPlayer() ~= 7 and bot:GetPlayer() ~= 4 then
-    bot:Action_MoveToLocation(map.rune.bounty.radiant_primary.location);
-    return;
-  end
-
-  --Reset back to start state if we're dead
-  if not bot:IsAlive() then
+  --TEMP: Send all bots back to fountain and leave them idling
+  if bot:GetPlayer() ~= 4 then
+    bot:Action_MoveToLocation(GetLocationAlongLane(LANE_MID, 0));
     return;
   end
 
   --Try to level abilities
   TryToLevel(bot);
 
-  --Are we channeling an ability (e.g. a teleport). If so just don't think (average dota2 player *rimshot*)
-  if bot:IsChanneling() then
-    print("Channeling");
+  --Reset back to start state if we're dead
+  if not bot:IsAlive() then
+    print("Bot is dead, considering buyback");
+    co = nil;
+
+    --todo: Consider buyback
+    bot:Action_Buyback(); --temp!
+
+    --Can't do anything else :(
     return;
   end
 
-  local loc = GetLaneFrontLocation(TEAM_RADIANT, LANE_MID, -100);
-  DebugDrawCircle(loc, 15, 255, 0, 100);
-  DebugDrawLine(bot:GetLocation(), loc, 255, 50, 100);
-
-  if GetTeam() == TEAM_DIRE then
-    local friendlies = bot:GetNearbyCreeps(1000, false);
-    for _, ally in pairs(friendlies) do
-      if ally:IsCreep() then
-        local target = ally:GetAttackTarget();
-        if target then
-          DebugDrawCircle(target:GetLocation(), 5, 75, 50, 0);
-          DebugDrawLine(ally:GetLocation(), target:GetLocation(), 255, 50, 0);
-        end
-      end
-    end
-
-    local enemies = bot:GetNearbyCreeps(1000, true);
-    for _, enemy in pairs(enemies) do
-      if enemies:IsCreep() then
-        local target = enemies:GetAttackTarget();
-        if target then
-          print("Enemy target")
-          DebugDrawCircle(target:GetLocation(), 5, 75, 50, 0);
-          DebugDrawLine(enemies:GetLocation(), target:GetLocation(), 255, 50, 0);
-        end
-      end
-    end
+  --Create a coroutine to run the main bot logic
+  if not co then
+    print("Creating primary coroutine");
+    co = coroutine.create(main_co);
   end
 
-  local creeps = bot:GetNearbyCreeps(bot:GetAttackRange() * 0.95, true);
-  local target, any = find_last_hit(creeps);
-  if target then
-    bot:Action_AttackUnit(target, true);
-  else
-    bot:Action_ClearActions(true);
-    bot:Action_MoveToLocation(loc);
+  --Run the coroutine and null it out once it finishes
+  local status, err = coroutine.resume(co);
+  if err then
+    print("Main coroutine err: " .. err);
+  end
+  if coroutine.status(co) == "dead" then
+    print("Completed main coroutine");
+    co = nil;
   end
 end
 
 return module;
-
---[[
-
-Last hit logic:
- - Watch creep health and delta health, attack once expected creep health (projected into future by attack time + projectile speed) is < attack damage
- - If there are enemy creeps but no friendly creeps in front of you in lane (and you're not going for last hit) retreat until you find friendly creeps
-]]
