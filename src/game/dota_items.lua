@@ -12,7 +12,7 @@ module.GetItemData = function(name)
   end
   
   --Convert some flags into a more useful format
-  item.ItemStackable = item.ItemStackable == "1";
+  item.ItemStackable = item.ItemStackable == "1"; --bool
   
   return item;
 end

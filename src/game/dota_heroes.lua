@@ -37,12 +37,12 @@ module.GetAttackInfo = function(bot)
   ]]
   return {
     AttackCapabilities = hero.AttackCapabilities;
-    AttackDamageMin = hero.AttackDamageMin,
-    AttackDamageMax = hero.AttackDamageMax,
+    AttackDamageMin = tonumber(hero.AttackDamageMin),
+    AttackDamageMax = tonumber(hero.AttackDamageMax),
     AttackDamageType = hero.AttackDamageType,
-    AttackAnimationPoint = hero.AttackAnimationPoint,
-    AttackRange = hero.AttackRange,
-    ProjectileSpeed = hero.ProjectileSpeed
+    AttackAnimationPoint = tonumber(hero.AttackAnimationPoint),
+    AttackRange = tonumber(hero.AttackRange),
+    ProjectileSpeed = tonumber(hero.ProjectileSpeed)
   }
 end
 
