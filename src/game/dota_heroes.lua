@@ -87,6 +87,14 @@ module.GetBaseAttributes = function(bot)
   return attr, primary;
 end
 
+--Returns a table of attributes followed by the primary attribute key (affected by items/buffs)
+--[[
+  {
+    str = 1,
+    int = 2,
+    agi = 3,
+  }, int
+]]
 module.GetCurrentAttributes = function(bot)
   local attr, primary = module.GetBaseAttributes(bot);
 
@@ -105,7 +113,7 @@ module.GetCurrentAttributes = function(bot)
 
             elseif false then
 
-              --TODO: Apply active item bonuses
+              --TODO: Apply active item bonuses (I think these all count as buffs)
 
             end
         end
@@ -113,6 +121,8 @@ module.GetCurrentAttributes = function(bot)
 
     --Bonuses from buffs
     --todo ^
+
+    return attr, primary;
 end
 
 module.GetAbilitiesNames = function(bot)

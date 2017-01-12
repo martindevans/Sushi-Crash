@@ -29,6 +29,18 @@ local function find_ability(item_data, key)
   return nil;
 end
 
+module.ContainsAbilityBehaviourFlag = function(item_data, name)
+  if item_data.AbilityBehaviour.find(name) then
+    return true;
+  else
+    return false;
+  end
+end
+
+module.GetAbilitySpecialValue = function(item_data, name)
+  return find_ability(name) or 0;
+end
+
 module.GetBonusStr = function(item_data)
   return (find_ability(item_data, "bonus_all_stats") or 0)
        + (find_ability(item_data, "bonus_strength") or 0);
@@ -76,6 +88,8 @@ module.GetItemData = function(name)
   item.GetBonusAgi = GetBonusAgi;
   item.GetBonusInt = GetBonusInt;
   item.GetBonusStr = GetBonusStr;
+  item.ContainsAbilityBehaviourFlag = ContainsAbilityBehaviourFlag;
+  item.GetAbilitySpecialValue = GetAbilitySpecialValue;
 
   return item;
 end

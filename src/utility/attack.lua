@@ -14,7 +14,7 @@ module.GetAttackDamage = function(bot)
     local atk = dota_heroes.GetAttackInfo(bot);
 
     local base_damage = atk.AttackDamageMin;
-    local primary_attr = 1;
+    local attrs, primary_attr_name = dota_hero.GetCurrentAttributes();
 
     --http://dota2.gamepedia.com/Attack_damage
     --We skip target armour, target damage block and crits
@@ -32,23 +32,18 @@ module.GetAttackDamage = function(bot)
 
     local primary_attr = 0;
 
-    --Add bonuses from items
+    --Add passive damage bonuses from items
     for i = 1, 6 do
         local item = bot:GetItemInSlot(i);
         if item then
-            local item_data = dota_items.GetItemData(item);
-            if item_data.AbilityBehavior == "DOTA_ABILITY_BEHAVIOR_PASSIVE" then
-                --local bonus_dmg = item_data.AbilitySpecial.
-            elseif false then
-
-            end
+            dmg = dmg + dota_items.GetItemData(item).GetAbilitySpecialValue("bonus_damage");
         end
     end
 
     --Bonuses from buffs
     --todo ^
 
-    --Bonuses from orbs
+    --Bonuses from auto attack spells
     --todo ^
 end
 
