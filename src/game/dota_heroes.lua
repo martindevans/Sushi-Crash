@@ -15,11 +15,12 @@ end
 
 local module = {};
 
+--Get a table of information about auto attacks
 module.GetAttackInfo = function(bot)
   local name = bot:GetUnitName();
   local hero = heroes[name];
   if not hero then
-    string.format("Warning: Cannot find hero '%s'", name);
+    error(string.format("Warning: Cannot find hero '%s'", name));
     return {};
   end
 
@@ -35,22 +36,90 @@ module.GetAttackInfo = function(bot)
 		"ProjectileModel"		"particles/base_attacks/ranged_hero.vpcf"
 		"ProjectileSpeed"		"900"
   ]]
-  return {
-    AttackCapabilities = hero.AttackCapabilities;
-    AttackDamageMin = tonumber(hero.AttackDamageMin),
-    AttackDamageMax = tonumber(hero.AttackDamageMax),
-    AttackDamageType = hero.AttackDamageType,
-    AttackAnimationPoint = tonumber(hero.AttackAnimationPoint),
-    AttackRange = tonumber(hero.AttackRange),
-    ProjectileSpeed = tonumber(hero.ProjectileSpeed)
+  if hero.ParsedAutoAttackData == nil then
+    hero.ParsedAutoAttackData = {
+      AttackDamageMin = tonumber(hero.AttackDamageMin),
+      AttackDamageMax = tonumber(hero.AttackDamageMax),
+      AttackDamageType = hero.AttackDamageType,
+      AttackAnimationPoint = tonumber(hero.AttackAnimationPoint),
+      AttackRange = tonumber(hero.AttackRange),
+      ProjectileSpeed = tonumber(hero.ProjectileSpeed),
+    }
+  end
+
+  return hero.ParsedAutoAttackData;
+end
+
+--Returns a table of attributes followed by the primary attribute key (not affected by items)
+--[[
+  {
+    str = 1,
+    int = 2,
+    agi = 3,
+  }, int
+]]
+module.GetBaseAttributes = function(bot)
+  local name = bot:GetUnitName();
+  local hero = heroes[name];
+  if not hero then
+    error(string.format("Warning: Cannot find hero '%s'", name));
+    return {}, nil;
+  end
+
+  --todo: GET BOT LEVEL
+  local level = 1;
+
+  --Calculate basic attributes from level
+  local attr = {
+    str = hero.AttributeBaseStrength + hero.AttributeStrengthGain * level,
+    int = hero.AttributeBaseIntelligence + hero.AttributeIntelligenceGain * level,
+    agi = hero.AttributeBaseAgility + hero.AttributeAgilityGain * level
   }
+  local primary = "";
+  if hero.AttributePrimary == "DOTA_ATTRIBUTE_INTELLECT" then
+    primary = "int";
+  elseif hero.AttributePrimary == "DOTA_ATTRIBUTE_STRENGTH" then
+    primary = "str";
+  else
+    primary = "agi";
+  end
+
+  return attr, primary;
+end
+
+module.GetCurrentAttributes = function(bot)
+  local attr, primary = module.GetBaseAttributes(bot);
+
+  --Add bonuses from items
+    for i = 1, 6 do
+        local item = bot:GetItemInSlot(i);
+        if item then
+            local item_data = dota_items.GetItemData(item);
+
+            if item_data.AbilityBehavior == "DOTA_ABILITY_BEHAVIOR_PASSIVE" then
+
+              --Apply passive item bonuses
+              attr.str = attr.str + item_data:GetBonusStr();
+              attr.int = attr.int + item_data:GetBonusInt();
+              attr.agi = attr.agi + item_data:GetBonusAgi();
+
+            elseif false then
+
+              --TODO: Apply active item bonuses
+
+            end
+        end
+    end
+
+    --Bonuses from buffs
+    --todo ^
 end
 
 module.GetAbilitiesNames = function(bot)
   local name = bot:GetUnitName();
   local hero = heroes[name];
   if not hero then
-    string.format("Warning: Cannot find hero '%s'", name);
+    error(string.format("Warning: Cannot find hero '%s'", name));
     return {};
   end
 

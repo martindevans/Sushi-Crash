@@ -168,8 +168,8 @@ local function main_co()
     bot:Action_AttackUnit(best_target.unit, true);
 
     --Wait for attack to *nearly* happen (minus 4 frames);
-    coroutine_helpers.wait_for_duration(bot:GetAttackPoint() - 0.016 * 4, function()
-	  print("Waiting to cancel: " .. tostring(bot:GetCurrentActionType() == BOT_ACTION_TYPE_ATTACK));
+    coroutine_helpers.wait_for_duration(bot:GetAttackPoint() - 0.016 * 4, function(el)
+	    print("Waiting to cancel: " .. tostring(bot:GetCurrentActionType() == BOT_ACTION_TYPE_ATTACK) .. " elapsed: " .. el);
     end);
 
 	  if not bot:GetCurrentActionType() == BOT_ACTION_TYPE_ATTACK then
@@ -179,7 +179,7 @@ local function main_co()
       local time = GetUnitToUnitDistance(bot, best_target.unit) / bot_attack.ProjectileSpeed;
       local _, idps = estimate_time_to_die(best_target.unit, bot:GetNearbyCreeps(1500, false));
 
-      print("attack: hp=" .. tostring(best_target.unit:GetHealth()) .. " idps=" .. tostring(idps) .. " time=" .. tostring(time) .. " point=" .. tostring(bot:GetAttackPoint()) .. " dmg=" .. tostring(best_target.unit:GetActualDamage(bot:GetBaseDamage(), DAMAGE_TYPE_PHYSICAL)));
+      print("attack: hp=" .. tostring(best_target.unit:GetHealth()) .. " idps=" .. tostring(idps) .. " time=" .. tostring(time) .. " dmg=" .. tostring(best_target.unit:GetActualDamage(bot:GetBaseDamage(), DAMAGE_TYPE_PHYSICAL)));
 
       if best_target.unit:GetHealth() - time * idps * 0.75 > best_target.unit:GetActualDamage(bot:GetBaseDamage(), DAMAGE_TYPE_PHYSICAL) * 0.95 then
         print("Cancelling attack");
@@ -204,7 +204,7 @@ local module = {};
 module.Think = function()
 
   --TEMP: Send all bots back to fountain and leave them idling
-  if bot:GetPlayer() ~= 4 then
+  if bot:GetPlayer() ~= 3 then
     bot:Action_MoveToLocation(GetLocationAlongLane(LANE_MID, 0));
     return;
   end

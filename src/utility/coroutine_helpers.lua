@@ -15,13 +15,13 @@ end
 module.wait_for_duration = function(seconds, tick)
 
   if seconds <= 0 then
-    tick();
+    tick(0);
     return;
   end
 
   local start = DotaTime();
   while DotaTime() - start < seconds do
-    if tick then tick(); end
+    if tick then tick(DotaTime() - start); end
     coroutine.yield();
   end
 end

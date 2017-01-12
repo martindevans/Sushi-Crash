@@ -10,10 +10,27 @@ local module = {};
 --    DAMAGE_TYPE_PURE = 2,
 -- }
 module.GetAttackDamage = function(bot)
+
     local atk = dota_heroes.GetAttackInfo(bot);
+
+    local base_damage = atk.AttackDamageMin;
+    local primary_attr = 1;
+
+    --http://dota2.gamepedia.com/Attack_damage
+    --We skip target armour, target damage block and crits
+    return (
+            (base_damage + primary_attr)
+            * (1 + sum_pcnt_attack_modifiers)
+            + bonus_damage - dmg_block
+        )
+        * (product_dmg_multipliers);
+
+    
 
     --accumulate damage amount
     local dmg = atk.AttackDamageMin;
+
+    local primary_attr = 0;
 
     --Add bonuses from items
     for i = 1, 6 do
@@ -21,7 +38,7 @@ module.GetAttackDamage = function(bot)
         if item then
             local item_data = dota_items.GetItemData(item);
             if item_data.AbilityBehavior == "DOTA_ABILITY_BEHAVIOR_PASSIVE" then
-                
+                --local bonus_dmg = item_data.AbilitySpecial.
             elseif false then
 
             end

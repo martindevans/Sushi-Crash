@@ -10,6 +10,7 @@ return {
 
   "src/game/dota_heroes.lua",
   "src/game/dota_map.lua",
+  "src/game/dota_items.lua",
 
   "src/behaviour_tree/behaviour_tree.lua",
   "src/behaviour_tree/nodes/condition.lua",
